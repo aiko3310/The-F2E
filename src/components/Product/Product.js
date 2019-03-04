@@ -1,5 +1,6 @@
 import React from 'react';
 import week0Img from '../../assets/img/week0/week0.jpg';
+import week1Img from '../../assets/img/week1/week1.jpg';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'antd';
 import { StyledBG, StyledCard } from './StyledProduct';
@@ -10,6 +11,12 @@ const products = [
     link: '/week0',
     description: '查詢報名頁',
     img: week0Img
+  },
+  {
+    title: 'week1',
+    link: '/week1',
+    description: 'Todo list',
+    img: week1Img
   }
 ];
 
@@ -18,7 +25,7 @@ const Product = () => {
     <StyledBG>
       <Row>
         <Col xs={24} md={22} push={2}>
-          <Row>
+          <Row gutter={16}>
             {products.map(product => {
               return (
                 <Col xs={24} md={4} key={product.title}>
