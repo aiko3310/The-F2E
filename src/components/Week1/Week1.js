@@ -142,8 +142,41 @@ const Week1 = () => {
   };
   const removeTask = id => {
     const taskIndex = taskList.findIndex(task => task.id === id);
-    console.log(taskList);
-    setTaskList(taskList.splice(taskIndex, 1));
+    const result = taskList.splice(taskIndex, 1);
+    setTaskList(result);
+  };
+  const renderTask = () => {
+    if (taskList.length) {
+      return taskList.map((task, key) => {
+        return (
+          <Task
+            showTask={true}
+            key={key}
+            editTitle={task.title}
+            star={task.star}
+            starShowHandler={e => changeTaskStar(key, e.target.checked)}
+            editTitleHandler={e => changeTask(key, e.target.value, 'title')}
+            date={task.date}
+            datePickerHandler={(date, dateString) =>
+              changeTask(key, dateString, 'date')
+            }
+            time={task.time}
+            timePickerHandler={(time, timeString) =>
+              changeTask(key, timeString, 'time')
+            }
+            content={task.content}
+            editContentHandler={e => changeTask(key, e.target.value, 'content')}
+            isDone={task.isDone}
+            isDoneHandler={e => changeTask(key, e.target.checked, 'isDone')}
+            cancelTitle='Remove Task'
+            onCancel={() => removeTask(key)}
+            addTitle='Edit Task'
+          />
+        );
+      });
+    } else {
+      return null;
+    }
   };
   return (
     <StyledContainerBg>
@@ -176,39 +209,7 @@ const Week1 = () => {
               addTitle='Add Task'
               onAdd={addTask}
             />
-            {taskList.map((task, key) => {
-              return (
-                <Task
-                  showTask={true}
-                  key={key}
-                  editTitle={task.title}
-                  star={task.star}
-                  starShowHandler={e => changeTaskStar(key, e.target.checked)}
-                  editTitleHandler={e =>
-                    changeTask(key, e.target.value, 'title')
-                  }
-                  date={task.date}
-                  datePickerHandler={(date, dateString) =>
-                    changeTask(key, dateString, 'date')
-                  }
-                  time={task.time}
-                  timePickerHandler={(time, timeString) =>
-                    changeTask(key, timeString, 'time')
-                  }
-                  content={task.content}
-                  editContentHandler={e =>
-                    changeTask(key, e.target.value, 'content')
-                  }
-                  isDone={task.isDone}
-                  isDoneHandler={e =>
-                    changeTask(key, e.target.checked, 'isDone')
-                  }
-                  cancelTitle='Remove Task'
-                  onCancel={() => removeTask(key)}
-                  addTitle='Edit Task'
-                />
-              );
-            })}
+            {renderTask()}
           </StyledContent>
         </StyledBG>
       </StyledContainer>
