@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import { Checkbox, DatePicker, TimePicker } from 'antd';
 import { bgGray, blue, yellow } from '../Color';
 
+const StyledShowTask = styled.div`
+  display: ${props => (props.showTask ? 'block' : 'none')};
+`;
 const StyledCotanier = styled.div`
   margin-top: 2%;
   padding: 32px;
@@ -77,6 +80,7 @@ const StyledFlexBox = styled.div`
   display: flex;
 `;
 export {
+  StyledShowTask,
   StyledCotanier,
   StyledCheckbox,
   StyledInputTitle,

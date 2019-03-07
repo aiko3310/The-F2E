@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import moment from 'moment';
 import IconComponent from './Icon';
 import { Icon, Button, Input } from 'antd';
 import {
+  StyledShowTask,
   StyledCotanier,
   StyledCheckbox,
   StyledInputTitle,
@@ -17,92 +19,56 @@ import {
 } from './StyledTask';
 const { TextArea } = Input;
 const Task = props => {
-  const [iconList, setIconList] = useState([
-    {
-      type: 'star',
-      isclick: false,
-      theme: ''
-    },
-    {
-      type: 'edit',
-      isclick: false,
-      theme: ''
-    }
-  ]);
-  const [dateChooce, setDateChooce] = useState('');
-  const [timeChooce, setTimeChooce] = useState('');
-  const [editTitle, setEditTitle] = useState('');
-  const [isDone, setIsDone] = useState(false);
-  const [editContent, setEditContent] = useState('');
-  const iconClickHandler = type => {
-    const result = iconList.map(icon => {
-      if (icon.type === type) {
-        return {
-          ...icon,
-          isclick: icon.isclick ? false : true,
-          theme: icon.isclick ? '' : 'filled'
-        };
-      } else {
-        return { ...icon };
-      }
-    });
-    setIconList(result);
-  };
-  const datePickerHandler = (date, dateString) => {
-    setDateChooce(dateString);
-  };
-  const timePickerHandler = (time, timeString) => {
-    setTimeChooce(timeString);
-  };
-  const editTitleHandler = e => {
-    setEditTitle(e.target.value);
-  };
-  const isDoneHandler = e => {
-    setIsDone(e.target.checked);
-  };
-  const editContentHandler = e => {
-    setEditContent(e.target.value);
-  };
-  const renderIcon = iconList.map((icon, index) => {
-    return (
-      <IconComponent
-        key={index}
-        type={icon.type}
-        isclick={icon.isclick}
-        theme={icon.theme}
-        onClick={() => iconClickHandler(icon.type)}
-      />
-    );
+  const [editShow, setEditShow] = useState({
+    type: 'edit',
+    isclick: false,
+    theme: ''
   });
+
+  const editShowHandler = () =>
+    setEditShow({
+      ...editShow,
+      isclick: !editShow.isclick,
+      theme: editShow.isclick ? '' : 'filled'
+    });
+
   const renderTitle = () => {
-    if (iconList[1].isclick) {
+    if (editShow.isclick) {
       return (
         <StyledInputTitle
           type='text'
           placeholder='Type Something Here...'
-          onChange={editTitleHandler}
-          value={editTitle}
+          onChange={props.editTitleHandler}
+          value={props.editTitle}
         />
       );
     } else {
       return (
-        <StyledTitle isDone={isDone}>
-          {editTitle ? editTitle : 'Type Something Here...'}
+        <StyledTitle isDone={props.isDone}>
+          {props.editTitle ? props.editTitle : 'Type Something Here...'}
         </StyledTitle>
       );
     }
   };
   return (
-    <>
-      <StyledCotanier isStar={iconList[0].isclick}>
-        <StyledCheckbox onClick={isDoneHandler} />
+    <StyledShowTask showTask={props.showTask}>
+      <StyledCotanier isStar={props.star.isclick}>
+        <StyledCheckbox onClick={props.isDoneHandler} checked={props.isDone} />
         {renderTitle()}
-        {renderIcon}
+        <IconComponent
+          type={props.star.type}
+          isclick={props.star.isclick}
+          theme={props.star.theme}
+          onClick={props.starShowHandler}
+        />
+        <IconComponent
+          type={editShow.type}
+          isclick={editShow.isclick}
+          theme={editShow.theme}
+          onClick={editShowHandler}
+        />
       </StyledCotanier>
-      <StyledEditCotainer
-        isShow={iconList[1].isclick}
-        isStar={iconList[0].isclick}
-      >
+      <StyledEditCotainer isShow={editShow.isclick} isStar={props.star.isclick}>
         <StyledEditContent>
           <StyledDetilConatiner>
             <StyledDetilHeader>
@@ -111,14 +77,19 @@ const Task = props => {
             </StyledDetilHeader>
             <StyledDetilContent>
               <StyledDatePicker
-                onChange={datePickerHandler}
+                onChange={props.datePickerHandler}
                 placeholder='yyyy/mm/dd'
                 size='large'
+                value={moment(
+                  props.date || moment().format('YYYY-MM-DD'),
+                  'YYYY-MM-DD'
+                )}
               />
               <StyledTimePicker
-                onChange={timePickerHandler}
+                onChange={props.timePickerHandler}
                 size='large'
                 placeholder='hh/mm'
+                value={moment(props.time || moment().format('HH:mm'), 'HH:mm')}
                 format='HH:mm'
               />
             </StyledDetilContent>
@@ -132,14 +103,21 @@ const Task = props => {
               <TextArea
                 rows={4}
                 placeholder='Type your memo here…'
-                onChange={editContentHandler}
+                onChange={props.editContentHandler}
+                value={props.content}
               />
             </StyledDetilContent>
           </StyledDetilConatiner>
         </StyledEditContent>
         <StyledFlexBox>
-          <Button type='danger' icon='close' block size='large'>
-            Cancel
+          <Button
+            type='danger'
+            icon='close'
+            block
+            size='large'
+            onClick={props.onCancel}
+          >
+            {props.cancelTitle}
           </Button>
           <Button
             type='primary'
@@ -148,11 +126,11 @@ const Task = props => {
             size='large'
             onClick={props.onAdd}
           >
-            Add Task
+            {props.addTitle}
           </Button>
         </StyledFlexBox>
       </StyledEditCotainer>
-    </>
+    </StyledShowTask>
   );
 };
 
