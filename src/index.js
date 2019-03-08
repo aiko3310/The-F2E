@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { BrowserRouter } from 'react-router-dom';
-import { Switch, Route } from 'react-router';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 import Home from './pages/HomePage';
 
 const app = (
-  <BrowserRouter basename='/THE-F2E'>
+  <Router basename='/The-F2E'>
     <Switch>
       <Route path='/' component={Home} />
     </Switch>
-  </BrowserRouter>
+  </Router>
 );
 ReactDOM.render(app, document.getElementById('root'));
 

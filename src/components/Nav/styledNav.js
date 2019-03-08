@@ -1,6 +1,13 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import { Row } from 'antd';
+import Breakpoint from '../BreakPoint';
+const StyledRow = styled(Row)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+`;
 const StyledBg = styled.div`
   background: #222;
 `;
@@ -29,7 +36,7 @@ const StyledImg = styled.img`
 `;
 const StyledLinks = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
   a {
     display: block;
@@ -39,5 +46,8 @@ const StyledLinks = styled.div`
       text-decoration: none;
     }
   }
+  @media screen and (min-white: ${Breakpoint.xs}) {
+    justify-content: space-between;
+  }
 `;
-export { StyledBg, StyledLinkHome, StyledImg, StyledLinks };
+export { StyledBg, StyledRow, StyledLinkHome, StyledImg, StyledLinks };

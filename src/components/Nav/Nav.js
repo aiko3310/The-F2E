@@ -1,8 +1,14 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import Logo from '../../assets/img/logo.svg';
-import { Row, Col } from 'antd';
-import { StyledBg, StyledLinkHome, StyledImg, StyledLinks } from './styledNav';
+import { Col } from 'antd';
+import {
+  StyledBg,
+  StyledRow,
+  StyledLinkHome,
+  StyledImg,
+  StyledLinks
+} from './styledNav';
 
 const menu = [
   {
@@ -47,17 +53,17 @@ const nav = () => {
   };
   return (
     <StyledBg>
-      <Row justify='space-between' type='flex' align='middle'>
-        <Col xs={12} sm={10} push={1}>
+      <StyledRow>
+        <Col xs={24} sm={10}>
           <StyledLinkHome to='./'>
             <StyledImg src={Logo} />
             解到起屁臉的前端工程
           </StyledLinkHome>
         </Col>
-        <Col xs={12} sm={4} pull={1}>
+        <Col xs={24} sm={4}>
           <StyledLinks>{renderNav()}</StyledLinks>
         </Col>
-      </Row>
+      </StyledRow>
     </StyledBg>
   );
 };

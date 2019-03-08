@@ -204,6 +204,7 @@ const Week1 = () => {
       return { ...task, id: id };
     });
     setTaskList(result);
+    setTaskId(taskId - 1);
   };
   const renderTask = () => {
     if (taskList.length) {
