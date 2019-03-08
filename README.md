@@ -7,5 +7,6 @@
 ## week 1
 
 Todo list
+練習 hooks, antd
 
 [設計稿](https://hexschool.github.io/THE_F2E_Design/todolist/?fbclid=IwAR0TIkK1TRE79o2Vx-Iy1DlQVM6EFyKxX7Kf0HjMKKRIPY0JL8m7ASbGm8M)

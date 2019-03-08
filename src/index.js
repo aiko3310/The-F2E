@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import Home from './pages/HomePage';
 
 const app = (
-  <BrowserRouter>
+  <BrowserRouter basename='/THE-F2E'>
     <Switch>
       <Route path='/' component={Home} />
     </Switch>

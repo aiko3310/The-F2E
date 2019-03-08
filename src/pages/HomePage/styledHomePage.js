@@ -1,3 +1,5 @@
 import styled from 'styled-components';
-
-export {};
+const StyledHomePage = styled.div`
+  font-family: '微軟正黑體', sans-serif;
+`;
+export { StyledHomePage };

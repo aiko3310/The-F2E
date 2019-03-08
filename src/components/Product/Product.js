@@ -1,25 +1,22 @@
 import React from 'react';
-import week0Img from '../../assets/img/week0/week0.jpg';
 import week1Img from '../../assets/img/week1/week1.jpg';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'antd';
-import { StyledBG, StyledCard } from './StyledProduct';
+import { StyledBG, StyledCard, StyledOl } from './StyledProduct';
 
 const products = [
   {
-    title: 'week0',
-    link: '/week0',
-    description: '查詢報名頁',
-    img: week0Img
-  },
-  {
-    title: 'week1',
+    title: 'week1 - Todolist',
     link: '/week1',
-    description: 'Todo list',
+    description: ['hooks', 'antd'],
     img: week1Img
   }
 ];
-
+const renderDescription = product => {
+  return product.description.map((description, i) => {
+    return <li key={i}>{description}</li>;
+  });
+};
 const Product = () => {
   return (
     <StyledBG>
@@ -28,13 +25,13 @@ const Product = () => {
           <Row gutter={16}>
             {products.map(product => {
               return (
-                <Col xs={24} md={4} key={product.title}>
+                <Col xs={24} md={8} key={product.title}>
                   <Link to={product.link}>
                     <StyledCard
                       cover={<img src={product.img} alt={product.title} />}
                     >
                       <h3>{product.title}</h3>
-                      <p>{product.description}</p>
+                      <StyledOl>{renderDescription(product)}</StyledOl>
                     </StyledCard>
                   </Link>
                 </Col>

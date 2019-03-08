@@ -4,6 +4,7 @@ import { blue, black, gray } from './Color';
 const StyledContainerBg = styled.div`
   background: ${black};
   min-height: 90vh;
+  padding: 30px 0;
 `;
 const StyledContainer = styled.div`
   max-width: 1024px;
@@ -20,7 +21,7 @@ const StyledContent = styled.div`
 `;
 const StyledAddTask = styled.div`
   background: white;
-  display: flex;
+  display: ${props => (props.show ? 'flex' : 'none')};
   align-items: center;
   cursor: pointer;
   font-size: 24px;

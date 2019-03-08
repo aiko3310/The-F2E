@@ -12,6 +12,7 @@ import {
 } from './StyledWeek1';
 
 const Week1 = () => {
+  const [showAddTaskBox, setShowAddTaskBox] = useState(true);
   const [taskHeader, setTaskHeader] = useState([
     {
       title: 'My Tasks',
@@ -50,7 +51,49 @@ const Week1 = () => {
       };
     });
     setTaskHeader(result);
+    changeTaskShow(title);
   };
+  const changeTaskShow = taskHeaderTitle => {
+    switch (taskHeaderTitle) {
+      case 'In Progress':
+        setShowTask(false);
+        setShowAddTaskBox(false);
+        setTaskList(
+          taskList.map(task => {
+            return {
+              ...task,
+              show: task.isDone ? false : true
+            };
+          })
+        );
+        break;
+      case 'Completed':
+        setShowTask(false);
+        setShowAddTaskBox(false);
+        setTaskList(
+          taskList.map(task => {
+            return {
+              ...task,
+              show: task.isDone ? true : false
+            };
+          })
+        );
+        break;
+      default:
+        setShowTask(true);
+        setShowAddTaskBox(true);
+        setTaskList(
+          taskList.map(task => {
+            return {
+              ...task,
+              show: true
+            };
+          })
+        );
+        break;
+    }
+  };
+  // 新增task
   const addTask = () => {
     setTaskList(
       taskList.concat({
@@ -60,16 +103,19 @@ const Week1 = () => {
         content: editContent,
         isDone: isDone,
         id: taskId,
-        star: star
+        star: star,
+        show: true
       })
     );
     setTaskId(taskId + 1);
     cleanTask();
   };
+  // 關閉 add task
   const cancelTask = () => {
     cleanTask();
     setShowTask(false);
   };
+  // 清空 task
   const cleanTask = () => {
     setStar({ ...star, isclick: false, theme: '' });
     setDateChooce(moment().format('YYYY-MM-DD'));
@@ -78,6 +124,7 @@ const Week1 = () => {
     setIsDone(false);
     setEditContent('');
   };
+  // add task 時改變 star 狀態
   const starShowHandler = () => {
     setStar({
       ...star,
@@ -85,21 +132,27 @@ const Week1 = () => {
       theme: star.isclick ? '' : 'filled'
     });
   };
+  // 改變日期
   const datePickerHandler = (date, dateString) => {
     setDateChooce(dateString);
   };
+  // 改變時間
   const timePickerHandler = (time, timeString) => {
     setTimeChooce(timeString);
   };
+  // 改變 task title
   const editTitleHandler = e => {
     setEditTitle(e.target.value);
   };
+  // 更改 checkbox 狀態
   const isDoneHandler = e => {
     setIsDone(e.target.checked);
   };
+  // 更改 content
   const editContentHandler = e => {
     setEditContent(e.target.value);
   };
+  // my tasks, in progress, completed
   const renderTaskHeader = taskHeader.map(item => {
     return (
       <TaskHeader
@@ -110,6 +163,7 @@ const Week1 = () => {
       />
     );
   });
+  // 更改 task 內容
   const changeTask = (id, value, title) => {
     const TaskList = taskList.map(task => {
       if (task.id === id) {
@@ -123,14 +177,15 @@ const Week1 = () => {
     });
     setTaskList(TaskList);
   };
-  const changeTaskStar = (id, value) => {
+  //更改 star 狀態
+  const changeTaskStar = id => {
     const TaskList = taskList.map(task => {
       if (task.id === id) {
         return {
           ...task,
           star: {
             ...task.star,
-            isclick: value,
+            isclick: !task.star.isclick,
             theme: task.star.isclick ? '' : 'filled'
           }
         };
@@ -140,9 +195,14 @@ const Week1 = () => {
     });
     setTaskList(TaskList);
   };
+  // 移除 task 列表裡的 task
   const removeTask = id => {
-    const taskIndex = taskList.findIndex(task => task.id === id);
-    const result = taskList.splice(taskIndex, 1);
+    const newTask = [...taskList];
+    const taskIndex = newTask.findIndex(task => task.id === id);
+    newTask.splice(taskIndex, 1);
+    const result = newTask.map((task, id) => {
+      return { ...task, id: id };
+    });
     setTaskList(result);
   };
   const renderTask = () => {
@@ -150,11 +210,11 @@ const Week1 = () => {
       return taskList.map((task, key) => {
         return (
           <Task
-            showTask={true}
+            showTask={task.show}
             key={key}
             editTitle={task.title}
             star={task.star}
-            starShowHandler={e => changeTaskStar(key, e.target.checked)}
+            starShowHandler={() => changeTaskStar(key)}
             editTitleHandler={e => changeTask(key, e.target.value, 'title')}
             date={task.date}
             datePickerHandler={(date, dateString) =>
@@ -170,7 +230,6 @@ const Week1 = () => {
             isDoneHandler={e => changeTask(key, e.target.checked, 'isDone')}
             cancelTitle='Remove Task'
             onCancel={() => removeTask(key)}
-            addTitle='Edit Task'
           />
         );
       });
@@ -186,7 +245,7 @@ const Week1 = () => {
         </StyledBG>
         <StyledBG BGGray>
           <StyledContent isCotent>
-            <StyledAddTask onClick={showTaskHandler}>
+            <StyledAddTask onClick={showTaskHandler} show={showAddTaskBox}>
               <Icon type='plus' />
               <p>Add Task</p>
             </StyledAddTask>

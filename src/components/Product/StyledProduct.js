@@ -14,4 +14,8 @@ const StyledCard = styled(Card)`
     font-size: 1.5em;
   }
 `;
-export { StyledBG, StyledCard };
+const StyledOl = styled.ol`
+  padding-left: 18px;
+  font-size: 1.3em;
+`;
+export { StyledBG, StyledCard, StyledOl };

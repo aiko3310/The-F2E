@@ -50,6 +50,44 @@ const Task = props => {
       );
     }
   };
+  const rederButton = () => {
+    if (props.onAdd) {
+      return (
+        <>
+          <Button
+            type='danger'
+            icon='close'
+            block
+            size='large'
+            onClick={props.onCancel}
+          >
+            {props.cancelTitle}
+          </Button>
+          <Button
+            type='primary'
+            icon='plus'
+            block
+            size='large'
+            onClick={props.onAdd}
+          >
+            {props.addTitle}
+          </Button>
+        </>
+      );
+    } else {
+      return (
+        <Button
+          type='danger'
+          icon='close'
+          block
+          size='large'
+          onClick={props.onCancel}
+        >
+          {props.cancelTitle}
+        </Button>
+      );
+    }
+  };
   return (
     <StyledShowTask showTask={props.showTask}>
       <StyledCotanier isStar={props.star.isclick}>
@@ -109,26 +147,7 @@ const Task = props => {
             </StyledDetilContent>
           </StyledDetilConatiner>
         </StyledEditContent>
-        <StyledFlexBox>
-          <Button
-            type='danger'
-            icon='close'
-            block
-            size='large'
-            onClick={props.onCancel}
-          >
-            {props.cancelTitle}
-          </Button>
-          <Button
-            type='primary'
-            icon='plus'
-            block
-            size='large'
-            onClick={props.onAdd}
-          >
-            {props.addTitle}
-          </Button>
-        </StyledFlexBox>
+        <StyledFlexBox>{rederButton()}</StyledFlexBox>
       </StyledEditCotainer>
     </StyledShowTask>
   );
