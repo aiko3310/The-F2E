@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Card } from 'antd';
+import { Card, Row } from 'antd';
 
 const StyledBG = styled.div`
   background: #222;
@@ -18,4 +18,7 @@ const StyledOl = styled.ol`
   padding-left: 18px;
   font-size: 1.3em;
 `;
-export { StyledBG, StyledCard, StyledOl };
+const StyledRow = styled(Row)`
+  width: 100%;
+`;
+export { StyledBG, StyledCard, StyledOl, StyledRow };
