@@ -14,7 +14,7 @@ const HomePage = () => {
         <Route path='/product' component={Product} />
         <Route path='/week1' component={week1} />
         <Route path='/week2' component={week2} />
-        <Route path='/' component={Product} />
+        <Route path='/The-F2E' component={Product} />
       </Switch>
     </StyledHomePage>
   );

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { blue, black } from './Color';
+import { blue, black, gray } from './Color';
 import { Input } from 'antd';
 
 const StyledBg = styled.div`
@@ -24,4 +24,13 @@ const StyledSearch = styled(Input.Search)`
   color: white;
   background: transparent;
 `;
-export { StyledBg, StyledContainer, StyledHeader, StyledSearch };
+const StyledChooceBg = styled.div`
+  background: ${gray};
+`;
+export {
+  StyledBg,
+  StyledContainer,
+  StyledHeader,
+  StyledSearch,
+  StyledChooceBg
+};
