@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyledCard, StyledCotent } from './StyledCard';
+import { StyledCard, StyledCotent, StyledImg } from './StyledCard';
 const Card = props => {
   return (
-    <StyledCard cover={<img src={props.src} alt={props.imgAlt} />}>
+    <StyledCard>
+      <StyledImg src={props.src} />
       <StyledCotent>
         <div>
-          <p>性別</p>
+          <p>性別:</p>
         </div>
         <div>
           <p>{props.sex}</p>
