@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { blue, black, gray } from './Color';
+import { blue, black, gray } from '../../components/Week2/Color';
 import { Input } from 'antd';
 
 const StyledBg = styled.div`
