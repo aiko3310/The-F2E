@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { blue, black, gray } from '../../components/Week2/Color';
-import { Input } from 'antd';
+import { Input, Col, Pagination } from 'antd';
 
 const StyledBg = styled.div`
   background: ${black};
@@ -23,14 +23,26 @@ const StyledHeader = styled.div`
 const StyledSearch = styled(Input.Search)`
   color: white;
   background: transparent;
+  width: 94%;
+  margin-left: 3%;
 `;
 const StyledChooceBg = styled.div`
   background: ${gray};
+`;
+
+const StyledCotent = styled(Col)`
+  background: ${gray};
+  padding: 1em;
+`;
+const StyledPagination = styled(Pagination)`
+  text-align: center;
 `;
 export {
   StyledBg,
   StyledContainer,
   StyledHeader,
   StyledSearch,
-  StyledChooceBg
+  StyledChooceBg,
+  StyledCotent,
+  StyledPagination
 };
