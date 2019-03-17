@@ -3,7 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import Card from '../../components/Week2/Card';
 import nodataImg from '../../assets/img/week2/nodata.jpg';
-import { Row, Col, Icon } from 'antd';
+import { Row, Col, Checkbox } from 'antd';
 import {
   StyledBg,
   StyledContainer,
@@ -14,13 +14,18 @@ import {
   StyledPagination
 } from './StyledWeek2';
 
+const CheckboxGroup = Checkbox.Group;
+
 class Week2 extends Component {
   state = {
     loading: false,
     animalArr: [],
     filterAnimalArr: [],
-    inputSearch: '',
     searchItem: {
+      sex: []
+    },
+    onSearchItem: {
+      inputSearch: '',
       sex: []
     },
     pagination: {
@@ -54,7 +59,7 @@ class Week2 extends Component {
           ? `https://asms.coa.gov.tw/AmlApp/Upload/pic/${datum.pic}`
           : nodataImg,
         // 性別
-        sex: datum.SexName,
+        sex: datum.SexName === 'none' ? '未知' : datum.SexName,
         // 品種
         breedName: datum.BreedName,
         // 年齡
@@ -73,6 +78,9 @@ class Week2 extends Component {
       pagination: {
         ...this.state.pagination,
         total: result.length
+      },
+      searchItem: {
+        sex: this.setArr(result, 'sex')
       }
     });
   };
@@ -87,16 +95,27 @@ class Week2 extends Component {
     });
   };
   // input 搜尋
-  onSearch = e => {
-    const { value } = e.target;
-    this.setState({ inputSearch: value }, () => this.filterCard());
+  onSearch = (value, setItem) => {
+    this.setState(
+      {
+        onSearchItem: {
+          ...this.state.onSearchItem,
+          [setItem]: value
+        }
+      },
+      () => {
+        console.log(this.state.onSearchItem);
+        this.filterCard();
+      }
+    );
   };
+
   // 過濾
   filterCard = () => {
     let result = [...this.state.animalArr].filter(datum => {
       if (
         Object.values(datum).filter(item =>
-          item.toString().includes(this.state.inputSearch)
+          item.toString().includes(this.state.onSearchItem.inputSearch)
         ).length > 0
       ) {
         return datum;
@@ -105,8 +124,30 @@ class Week2 extends Component {
         return;
       }
     });
+    // 排序性別
+    result = [...result].filter(datum => {
+      if (this.state.onSearchItem.sex.length > 0) {
+        if (
+          this.state.onSearchItem.sex.filter(sex => datum.sex === sex).length >
+          0
+        ) {
+          return datum;
+        } else {
+          // eslint-disable-next-line array-callback-return
+          return;
+        }
+      } else {
+        return datum;
+      }
+    });
     this.setState({ filterAnimalArr: result }, () =>
-      console.log(this.state.filterAnimalArr)
+      this.setState({
+        pagination: {
+          ...this.state.pagination,
+          current: 1,
+          total: this.state.filterAnimalArr.length
+        }
+      })
     );
   };
   // 整理資料
@@ -149,6 +190,22 @@ class Week2 extends Component {
       return result;
     }
   };
+  renderSexChooce = () => {
+    if (this.state.searchItem.sex.length > 0) {
+      const option = this.state.searchItem.sex.map(datum => {
+        return {
+          label: datum,
+          value: datum
+        };
+      });
+      return (
+        <CheckboxGroup
+          options={option}
+          onChange={value => this.onSearch(value, 'sex')}
+        />
+      );
+    }
+  };
   render() {
     return (
       <StyledBg>
@@ -161,14 +218,14 @@ class Week2 extends Component {
               <Col xs={22} md={18}>
                 <StyledSearch
                   placeholder='輸入條件後按下 Enter 或點擊搜尋'
-                  onChange={e => this.onSearch(e)}
+                  onSearch={value => this.onSearch(value, 'inputSearch')}
                 />
               </Col>
             </Row>
           </StyledHeader>
           <Row>
             <Col xs={22} md={6}>
-              <StyledChooceBg>23</StyledChooceBg>
+              <StyledChooceBg>{this.renderSexChooce()}</StyledChooceBg>
             </Col>
             <StyledCotent xs={22} md={18}>
               <Row>{this.renderCard()}</Row>
