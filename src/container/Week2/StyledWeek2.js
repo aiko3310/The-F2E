@@ -28,6 +28,12 @@ const StyledSearch = styled(Input.Search)`
 `;
 const StyledChooceBg = styled.div`
   background: ${gray};
+  padding: 1em;
+  > h2 {
+    font-weight: bold;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #ccc;
+  }
 `;
 
 const StyledCotent = styled(Col)`
@@ -37,6 +43,29 @@ const StyledCotent = styled(Col)`
 const StyledPagination = styled(Pagination)`
   text-align: center;
 `;
+const StyledSexContainer = styled.div`
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.5em;
+  margin-bottom: 0.5em;
+  > p {
+    font-size: 18px;
+    margin-bottom: 0.5em;
+  }
+  > div {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+const StyledSelectConteiner = styled.div`
+  margin-bottom: 0.5em;
+  > p {
+    font-size: 18px;
+    margin-bottom: 0.5em;
+  }
+  > div {
+    width: 100%;
+  }
+`;
 export {
   StyledBg,
   StyledContainer,
@@ -44,5 +73,7 @@ export {
   StyledSearch,
   StyledChooceBg,
   StyledCotent,
-  StyledPagination
+  StyledPagination,
+  StyledSexContainer,
+  StyledSelectConteiner
 };
