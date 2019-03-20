@@ -2,7 +2,7 @@
   "name": "The-F2E",
   "version": "0.1.0",
   "private": true,
-  "homepage": "./",
+  "homepage": "https://aiko3310.github.io/The-F2E/",
   "dependencies": {
     "@babel/core": "7.2.2",
     "@svgr/webpack": "4.1.0",

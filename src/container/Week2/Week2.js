@@ -3,7 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import Card from '../../components/Week2/Card';
 import nodataImg from '../../assets/img/week2/nodata.jpg';
-import { Row, Col, Checkbox, Select, Button } from 'antd';
+import { Row, Col, Checkbox, Select, Button, message } from 'antd';
 import {
   StyledBg,
   StyledContainer,
@@ -13,7 +13,11 @@ import {
   StyledCotent,
   StyledPagination,
   StyledSexContainer,
-  StyledSelectConteiner
+  StyledSelectConteiner,
+  StyledAlert,
+  StyledSpin,
+  StyledTagsContainer,
+  StyledTag
 } from './StyledWeek2';
 
 const CheckboxGroup = Checkbox.Group;
@@ -21,7 +25,7 @@ const Option = Select.Option;
 
 class Week2 extends Component {
   state = {
-    loading: false,
+    loading: true,
     animalArr: [],
     filterAnimalArr: [],
     searchItem: {
@@ -31,6 +35,7 @@ class Week2 extends Component {
     },
     onSearchItem: {
       inputSearch: '',
+      tags: [],
       sex: [],
       age: '選擇年齡',
       areaName: '選擇地區'
@@ -105,32 +110,68 @@ class Week2 extends Component {
   };
   // input 搜尋
   onSearch = (value, setItem) => {
-    this.setState(
-      {
+    if (setItem === 'inputSearch') {
+      if (this.state.onSearchItem.tags.indexOf(value) === -1) {
+        this.setState(
+          prevState => prevState.onSearchItem.tags.push(value),
+          () => {
+            this.filterCard();
+          }
+        );
+      } else {
+        message.error('重複條件');
+      }
+      this.setState({
         onSearchItem: {
           ...this.state.onSearchItem,
-          [setItem]: value
+          inputSearch: ''
         }
-      },
-      () => {
-        console.log(this.state.onSearchItem);
-        this.filterCard();
-      }
-    );
+      });
+    } else {
+      this.setState(
+        {
+          onSearchItem: {
+            ...this.state.onSearchItem,
+            [setItem]: value
+          }
+        },
+        () => {
+          this.filterCard();
+        }
+      );
+    }
   };
-
+  searchOnChange = value => {
+    this.setState({
+      onSearchItem: {
+        ...this.state.onSearchItem,
+        inputSearch: value
+      }
+    });
+  };
   // 過濾
-  filterCard = () => {
+  filterCard = async () => {
+    await this.setState({ loading: true });
+    // tags過濾
     let result = [...this.state.animalArr].filter(datum => {
-      if (
-        Object.values(datum).filter(item =>
-          item.toString().includes(this.state.onSearchItem.inputSearch)
-        ).length > 0
-      ) {
-        return datum;
+      const tags = this.state.onSearchItem.tags;
+      if (tags.length > 0) {
+        const serachResult = tags.filter(tag => {
+          if (Object.values(datum).indexOf(tag) > 0) {
+            return tag;
+          } else {
+            // eslint-disable-next-line array-callback-return
+            return;
+          }
+        });
+        if (serachResult.length > 0) {
+          return datum;
+        } else {
+          // eslint-disable-next-line array-callback-return
+          return;
+        }
       } else {
-        // eslint-disable-next-line array-callback-return
-        return;
+        return datum;
       }
     });
     // 排序性別
@@ -173,7 +214,7 @@ class Week2 extends Component {
         return datum;
       }
     });
-    this.setState({ filterAnimalArr: result }, () =>
+    await this.setState({ filterAnimalArr: result }, () =>
       this.setState({
         pagination: {
           ...this.state.pagination,
@@ -182,6 +223,7 @@ class Week2 extends Component {
         }
       })
     );
+    this.setState({ loading: false });
   };
   // 整理資料
   setArr = (arr, item) => {
@@ -197,8 +239,10 @@ class Week2 extends Component {
   };
   async componentDidMount() {
     await this.fetchData();
+    this.setState({ loading: false });
   }
   renderCard = () => {
+    let result;
     if (this.state.filterAnimalArr.length > 0) {
       const filterResult = this.state.filterAnimalArr.filter((datum, i) => {
         if (
@@ -211,7 +255,7 @@ class Week2 extends Component {
           return;
         }
       });
-      const result = filterResult.map(datum => (
+      result = filterResult.map(datum => (
         <Col xs={11} md={6} key={datum.acceptNum}>
           <Card
             imgAlt={datum.acceptNum}
@@ -227,8 +271,16 @@ class Week2 extends Component {
           />
         </Col>
       ));
-      return result;
+    } else {
+      result = (
+        <StyledAlert
+          message='找不到資料'
+          description='不好意思，沒有符合的資料。'
+          type='warning'
+        />
+      );
     }
+    return result;
   };
   renderSexChooce = () => {
     if (this.state.searchItem.sex.length > 0) {
@@ -266,16 +318,34 @@ class Week2 extends Component {
     }
   };
   resetSearch = () => {
-    console.log('casa');
     this.setState(
       {
         onSearchItem: {
           inputSearch: '',
           sex: [],
+          tags: [],
           age: '選擇年齡',
           areaName: '選擇地區'
         }
       },
+      () => this.filterCard()
+    );
+  };
+  renderTags = () => {
+    return this.state.onSearchItem.tags.map((text, i) => (
+      <StyledTag
+        key={text + i}
+        closable={true}
+        onClose={() => this.closeTags(text)}
+      >
+        {text}
+      </StyledTag>
+    ));
+  };
+  closeTags = text => {
+    const index = this.state.onSearchItem.tags.indexOf(text);
+    this.setState(
+      prevState => prevState.onSearchItem.tags.splice(index),
       () => this.filterCard()
     );
   };
@@ -292,8 +362,11 @@ class Week2 extends Component {
                 <StyledSearch
                   placeholder='輸入條件後按下 Enter 或點擊搜尋'
                   onSearch={value => this.onSearch(value, 'inputSearch')}
+                  onChange={e => this.searchOnChange(e.target.value)}
+                  value={this.state.onSearchItem.inputSearch}
                   prefix={<span />}
                 />
+                <StyledTagsContainer>{this.renderTags()}</StyledTagsContainer>
               </Col>
             </Row>
           </StyledHeader>
@@ -331,8 +404,14 @@ class Week2 extends Component {
               </StyledChooceBg>
             </Col>
             <StyledCotent xs={22} md={18}>
-              <Row>{this.renderCard()}</Row>
-              <StyledPagination {...this.state.pagination} />
+              <StyledSpin spinning={this.state.loading} tip='Loading...'>
+                {this.state.loading ? null : (
+                  <>
+                    <Row>{this.renderCard()}</Row>
+                    <StyledPagination {...this.state.pagination} />
+                  </>
+                )}
+              </StyledSpin>
             </StyledCotent>
           </Row>
         </StyledContainer>

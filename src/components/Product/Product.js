@@ -1,5 +1,6 @@
 import React from 'react';
 import week1Img from '../../assets/img/week1/week1.jpg';
+import week2Img from '../../assets/img/week2/week2.jpg';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'antd';
 import { StyledBG, StyledCard, StyledOl, StyledRow } from './StyledProduct';
@@ -8,14 +9,20 @@ const products = [
   {
     title: 'Todolist',
     link: '/week1',
-    description: ['hooks', 'antd'],
+    description: ['Todolist 練習'],
     img: week1Img
   },
   {
     title: '動物認養平台',
     link: '/week2',
-    description: ['hooks', 'antd'],
-    img: week1Img
+    description: ['資料篩選練習'],
+    img: week2Img
+  },
+  {
+    title: '天氣api',
+    link: '/week3',
+    description: ['資料篩選練習'],
+    img: week2Img
   }
 ];
 const renderDescription = product => {

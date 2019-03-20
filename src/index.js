@@ -7,8 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import Home from './pages/HomePage';
 
 const app = (
-  // <Router basename='/The-F2E'>
-  <Router>
+  <Router basename={process.env.PUBLIC_URL}>
     <Switch>
       <Route path='/' component={Home} />
     </Switch>

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { blue, black, gray } from '../../components/Week2/Color';
-import { Input, Col, Pagination } from 'antd';
+import { Input, Col, Pagination, Alert, Spin, Tag } from 'antd';
 
 const StyledBg = styled.div`
   background: ${black};
@@ -57,7 +57,9 @@ const StyledSexContainer = styled.div`
   }
 `;
 const StyledSelectConteiner = styled.div`
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.5em;
   > p {
     font-size: 18px;
     margin-bottom: 0.5em;
@@ -65,6 +67,21 @@ const StyledSelectConteiner = styled.div`
   > div {
     width: 100%;
   }
+`;
+const StyledAlert = styled(Alert)`
+  width: 96.5%;
+  margin-left: 1.5%;
+`;
+const StyledSpin = styled(Spin)`
+  text-align: center;
+  display: block;
+`;
+const StyledTagsContainer = styled.div`
+  width: 94%;
+  margin-left: 3%;
+`;
+const StyledTag = styled(Tag)`
+  margin-top: 1%;
 `;
 export {
   StyledBg,
@@ -75,5 +92,9 @@ export {
   StyledCotent,
   StyledPagination,
   StyledSexContainer,
-  StyledSelectConteiner
+  StyledSelectConteiner,
+  StyledAlert,
+  StyledSpin,
+  StyledTagsContainer,
+  StyledTag
 };

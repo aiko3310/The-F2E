@@ -23,7 +23,7 @@ const menu = [
   },
   {
     title: '作品展示',
-    link: '/product',
+    link: `/product`,
     target: false
   }
 ];
