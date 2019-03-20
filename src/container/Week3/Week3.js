@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { Tabs } from 'antd';
-import { StyledContainerBg, StyledRow, StyledCol } from './styledWeek3';
+import {
+  StyledContainerBg,
+  StyledRow,
+  StyledCol,
+  StyledContent
+} from './styledWeek3';
 const TabPane = Tabs.TabPane;
 class Week3 extends Component {
   state = {
@@ -23,22 +28,28 @@ class Week3 extends Component {
   renderCard = () => {
     if (!this.state.loading) {
       return this.state.towns.map(datum => {
-        const filterDatum = datum.weatherElement[0].time.filter(
-          (_, i) => i % 2 !== 0
+        const weatherDatum = datum.weatherElement.map(datum =>
+          datum.time.filter((_, i) => i % 2 !== 0)
         );
-        console.log(filterDatum);
-        const renderTabPane = filterDatum.map(time => (
+        const array = new Array(7).fill([]);
+        const data = array.map((_, index) =>
+          weatherDatum.map((item, i) => weatherDatum[i][index])
+        );
+
+        const renderTabPane = data.map(item => (
           <TabPane
-            tab={moment(time.startTime).format('MM/DD')}
-            key={time.startTime}
+            tab={moment(item[0].startTime).format('MM/DD')}
+            key={item[0].startTime}
           >
-            <p>{time.parameter.parameterName}</p>
+            <p>{item[0].parameter.parameterName}</p>
           </TabPane>
         ));
         return (
           <StyledCol xs={12} md={8} key={datum.locationName}>
-            <p>{datum.locationName}</p>
-            <Tabs>{renderTabPane}</Tabs>
+            <StyledContent>
+              <p>{datum.locationName}</p>
+              <Tabs>{renderTabPane}</Tabs>
+            </StyledContent>
           </StyledCol>
         );
       });
@@ -48,8 +59,6 @@ class Week3 extends Component {
     return (
       <StyledContainerBg>
         <StyledRow gutter={32}>{this.renderCard()}</StyledRow>
-        {/* {console.log(this.state.townsWeather[0])} */}
-        {/* <img src={this.state.townsWeather[0].img} /> */}
       </StyledContainerBg>
     );
   }

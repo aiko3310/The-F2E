@@ -12,6 +12,14 @@ const StyledRow = styled(Row)`
 `;
 const StyledCol = styled(Col)`
   margin-bottom: 1em;
-  background: white;
+  padding: 1em;
 `;
-export { StyledContainerBg, StyledRow, StyledCol };
+const StyledContent = styled.div`
+  background: white;
+  padding: 1em;
+  border-radius: 10px;
+  > p {
+    font-size: 18px;
+  }
+`;
+export { StyledContainerBg, StyledRow, StyledCol, StyledContent };
