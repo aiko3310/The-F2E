@@ -1,6 +1,7 @@
 import React from 'react';
 import week1Img from '../../assets/img/week1/week1.jpg';
 import week2Img from '../../assets/img/week2/week2.jpg';
+import week3Img from '../../assets/img/week3/week3.jpg';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'antd';
 import { StyledBG, StyledCard, StyledOl, StyledRow } from './StyledProduct';
@@ -21,8 +22,8 @@ const products = [
   {
     title: '天氣api',
     link: '/week3',
-    description: ['資料篩選練習'],
-    img: week2Img
+    description: ['政府資料介接', '陣列整理'],
+    img: week3Img
   }
 ];
 const renderDescription = product => {
