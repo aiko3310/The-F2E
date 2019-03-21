@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { black } from '../../components/Week3/Color';
-import { Row, Col } from 'antd';
+import { black, yellow, blue, gray } from '../../components/Week3/Color';
+import { Row, Col, Tabs } from 'antd';
 const StyledContainerBg = styled.div`
   background: ${black};
   min-height: 90vh;
@@ -19,7 +19,39 @@ const StyledContent = styled.div`
   padding: 1em;
   border-radius: 10px;
   > p {
-    font-size: 18px;
+    font-size: 2.5em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 0;
   }
 `;
-export { StyledContainerBg, StyledRow, StyledCol, StyledContent };
+const StyledTabPane = styled(Tabs.TabPane)`
+  ${props => {
+    const value = props.background;
+    if (value < 5) {
+      return `
+      background: ${blue};
+      box-shadow: 0 0 1em 0 ${blue};
+      `;
+    } else if (value >= 5 && value <= 8) {
+      return `
+      background: ${yellow};
+      box-shadow: 0 0 1em 0 ${yellow};
+      `;
+    } else {
+      return `
+      background: ${gray};
+      box-shadow: 0 0 1em 0 ${gray};
+      `;
+    }
+  }};
+  border-radius: 10px;
+  padding: 10px;
+`;
+export {
+  StyledContainerBg,
+  StyledRow,
+  StyledCol,
+  StyledContent,
+  StyledTabPane
+};

@@ -1,8 +1,6 @@
-const blue = '#4A90E2';
+const blue = '#d6e4ff';
 const black = '#222';
-const gray = '#E1E1E1';
-const fontBlue = '#00408B';
-const bgGray = '#F2F2F2';
-const yellow = '#FFF2DC';
+const gray = '#e8e8e8';
+const yellow = '#ffffb8';
 
-export { blue, black, gray, fontBlue, bgGray, yellow };
+export { blue, black, gray, yellow };

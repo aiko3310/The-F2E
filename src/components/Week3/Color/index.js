@@ -1,1 +1,1 @@
-export { blue, black, gray, fontBlue, bgGray, yellow } from './Color';
+export { blue, black, gray, yellow } from './Color';

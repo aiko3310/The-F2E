@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import 'moment/locale/zh-tw';
 import { Tabs } from 'antd';
 import {
   StyledContainerBg,
   StyledRow,
   StyledCol,
-  StyledContent
+  StyledContent,
+  StyledTabPane
 } from './styledWeek3';
-const TabPane = Tabs.TabPane;
+moment.locale('zh-tw');
 class Week3 extends Component {
   state = {
     towns: [],
@@ -27,25 +29,32 @@ class Week3 extends Component {
   }
   renderCard = () => {
     if (!this.state.loading) {
-      return this.state.towns.map(datum => {
+      return this.state.towns.map((datum, i) => {
         const weatherDatum = datum.weatherElement.map(datum =>
           datum.time.filter((_, i) => i % 2 !== 0)
         );
         const array = new Array(7).fill([]);
         const data = array.map((_, index) =>
-          weatherDatum.map((item, i) => weatherDatum[i][index])
+          weatherDatum.map((__, i) => weatherDatum[i][index])
         );
-
-        const renderTabPane = data.map(item => (
-          <TabPane
-            tab={moment(item[0].startTime).format('MM/DD')}
-            key={item[0].startTime}
-          >
-            <p>{item[0].parameter.parameterName}</p>
-          </TabPane>
-        ));
+        const renderTabPane = data.map(item => {
+          const time = item[0].startTime;
+          return (
+            <StyledTabPane
+              tab={
+                moment(time).format('MM/DD') + ' ' + moment(time).format('dddd')
+              }
+              key={item[0].startTime}
+              background={item[0].parameter.parameterValue}
+            >
+              <p>{item[0].parameter.parameterName}</p>
+              <p>最高溫度: {item[1].parameter.parameterName}°C</p>
+              <p>最低溫度: {item[2].parameter.parameterName}°C</p>
+            </StyledTabPane>
+          );
+        });
         return (
-          <StyledCol xs={12} md={8} key={datum.locationName}>
+          <StyledCol xs={24} md={12} lg={8} key={datum.locationName}>
             <StyledContent>
               <p>{datum.locationName}</p>
               <Tabs>{renderTabPane}</Tabs>
